@@ -83,7 +83,7 @@ router.get('/:productId', async (req, res) => {
       return;
     }
 
-    res.json({ product });
+    res.send({ product });
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
