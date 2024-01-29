@@ -73,5 +73,19 @@ router.patch('/:id',async(req,res)=>{
     res.status(400).send({message:error.message})
   }
 })
+router.get('/:productId', async (req, res) => {
+  const productId = req.params.productId;
+  try {
+    const product = await productSchema.findById(productId);
 
+    if (!product) {
+      res.status(404).json({ error: 'Product not found' });
+      return;
+    }
+
+    res.json({ product });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 module.exports = router;
