@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
       email,
       password: hashedPassword,
     });
-    const token = jwt.sign({userId:user.id},process.env.SECRET_TOKEN)
+    const token = jwt.sign({userId:user.id},'1234564')
     res.status(201).json({ message: "User created!", user ,token});
   } catch (e) {
     res.send({ message: e.message });
@@ -37,7 +37,7 @@ try{
   if (!isMatch) {
     return res.status(400).send('Invalid Email or Password');
   }
-  const token = jwt.sign({userId:user.id}, process.env.SECRET_TOKEN,{expiresIn:'7 days'})
+  const token = jwt.sign({userId:user.id}, '1234564',{expiresIn:'7 days'})
   res.status(200).send({user,token})}
   catch(e){
     res.status(500).send({message:e.message})
