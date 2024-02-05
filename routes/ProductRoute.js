@@ -1,13 +1,11 @@
-
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const multer = require('multer');
-const productSchema = require('../models/product');
-
+const multer = require("multer");
+const productSchema = require("../models/product");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
@@ -17,32 +15,30 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Get all products
-router.get('/all', async (req, res) => {
+router.get("/all", async (req, res) => {
   try {
     const products = await productSchema.find({});
     res.status(200).send(products);
   } catch (error) {
     console.error({ message: error.message });
-    res.status(500).send({ message: 'Internal Server Error' });
+    res.status(500).send({ message: "Internal Server Error" });
   }
 });
-router.get('/list', async (req, res) => {
+router.get("/list", async (req, res) => {
   try {
     const products = await productSchema.find({}).limit(8);
     res.status(200).send(products);
   } catch (error) {
     console.error({ message: error.message });
-    res.status(500).send({ message: 'Internal Server Error' });
+    res.status(500).send({ message: "Internal Server Error" });
   }
 });
 
-// Create a new product with image upload
-router.post('/create', upload.single('productImage'), async (req, res) => {
+router.post("/create", upload.single("productImage"), async (req, res) => {
   try {
-    const data = req.body;  // For non-file fields
-    const image = req.file ? req.file.filename : undefined;  // For the file field
+    const data = req.body;
+    const image = req.file ? req.file.filename : undefined;
 
-    // Assuming you have fields corresponding to product attributes in your product schema
     const product = await productSchema.create({
       name: data.name,
       reference: data.reference,
@@ -50,42 +46,42 @@ router.post('/create', upload.single('productImage'), async (req, res) => {
       price: data.price,
       quantity: data.quantity,
       Availability: data.Availability,
-      image: image,  // Assuming 'image' corresponds to the field in your MongoDB schema
+      image: image,
     });
-    
+
     res.status(201).send(product);
   } catch (error) {
     console.error({ message: error.message });
-    res.status(500).send({ message: 'Internal Server Error' });
+    res.status(500).send({ message: "Internal Server Error" });
   }
 });
-router.patch('/:id',async(req,res)=>{
+router.patch("/:id", async (req, res) => {
   try {
-    const id = req.params.id
-    const product = await productSchema.findById(id)
-    if(req.body.action === 'increase'){
-      product.quantity +=1
-    }else if(req.body.action === 'decrease' && product.quantity>0){
-      product.quantity -=1
+    const id = req.params.id;
+    const product = await productSchema.findById(id);
+    if (req.body.action === "increase") {
+      product.quantity += 1;
+    } else if (req.body.action === "decrease" && product.quantity > 0) {
+      product.quantity -= 1;
     }
-    await product.save()
+    await product.save();
   } catch (error) {
-    res.status(400).send({message:error.message})
+    res.status(400).send({ message: error.message });
   }
-})
-router.get('/:productId', async (req, res) => {
+});
+router.get("/:productId", async (req, res) => {
   const productId = req.params.productId;
   try {
     const product = await productSchema.findById(productId);
 
     if (!product) {
-      res.status(404).json({ error: 'Product not found' });
+      res.status(404).json({ error: "Product not found" });
       return;
     }
 
     res.send({ product });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 module.exports = router;

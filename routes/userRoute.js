@@ -4,7 +4,7 @@ const userSchema = require("../models/userSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const isAuth = require("./auth");
-'https://localhost:300/register'
+'http://localhost:6010/register'
 router.post("/register", async (req, res) => {
   try {
     const { firstName,lastName, email, password } = req.body;
@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
     res.send({ message: e.message });
   }
 });
-'https://localhost:300/profile'
+'http://localhost:6010/profile'
 router.post('/login',async(req,res)=>{
 try{ 
    const {email,password}=req.body
@@ -43,7 +43,7 @@ try{
     res.status(500).send({message:e.message})
   }
 })
-'https://localhost:300/profile'
+'http://localhost:6010/profile'
 router.get('/profile',isAuth,(req,res)=>{
 try {
   res.status(200).send({user:req.user})
@@ -51,7 +51,7 @@ try {
   res.status(500).send({message:e.message})
 }
 })
-'https://localhost:300/all'
+'http://localhost:6010/all'
 router.get('/all',isAuth,async(req,res)=>{
   try {
     if (req.user.role !== "admin") {
