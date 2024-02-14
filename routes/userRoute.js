@@ -51,6 +51,18 @@ try {
   res.status(500).send({message:e.message})
 }
 })
+router.patch('/update/:id',isAuth, async (req, res) => {
+try {
+  const id = req.params.id
+  const usr = await userSchema.findByIdAndUpdate(id, req.body, { new: true })
+  if (!usr) {
+    return res.status(404).send("No User Found")
+  }
+  res.status(200).send(usr);
+} catch (e) {
+  console.log({message:e.message});
+  res.status(500).send({ message: e.message });
+}});
 'http://localhost:6010/all'
 router.get('/all',isAuth,async(req,res)=>{
   try {

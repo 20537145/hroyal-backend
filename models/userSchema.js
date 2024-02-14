@@ -28,13 +28,13 @@ const userSchema  = new mongoose.Schema({
         default:'user',
         enum:['admin','user']
     },
-    adress:{
+    address:{
         type:String,
         required: false,
     },
     PhoneNumber:{
         type:Number,
-        required:true
+        required:false
     },
     city:{
         type:String,
