@@ -24,6 +24,26 @@ router.get("/all", async (req, res) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 });
+router.get('/search', async (req, res) => {
+  try {
+    const { name } = req.query;
+
+    if (!name) {
+      return res.json([]);
+    }
+
+    const products = await productSchema.find({
+      name: { $regex: new RegExp(`${name}`, 'i') }
+    });
+
+    res.json(products);
+  } catch (error) {
+    console.error('Error searching products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 router.get("/list", async (req, res) => {
   try {
     const products = await productSchema.find({}).limit(8);
