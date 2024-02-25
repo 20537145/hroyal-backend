@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const userSchema = require("../models/userSchema");
+const productSchema = require("../models/product");
 
 const isAuth = async (req, res, next) => {
   try {
@@ -11,7 +11,7 @@ const isAuth = async (req, res, next) => {
 
     const decodedToken = await jwt.verify(token, "1234564");
     const id = decodedToken.userId;
-    const user = await userSchema.findById(id);
+    const user = await productSchema.findById(id);
 
     req.user = user;
     next();

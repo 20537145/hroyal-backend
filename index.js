@@ -13,7 +13,6 @@ const productSchema = require('./routes/ProductRoute');
 
 app.use(express.json());
 
-// Connect to MongoDB with the correct connection URL and options
 mongoose.connect('mongodb+srv://ahmedcherif19x:123@cluster0.di7vh4t.mongodb.net/hroyal');
 
 const db = mongoose.connection;

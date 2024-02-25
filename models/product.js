@@ -3,22 +3,21 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
     name:{
         type:String,
-        required:[true,'Please provide a name for the product'],
+        required: false,
         maxlength:[32,"Name can't be more than 32 characters"],
         trim: true,
     },
     reference:{
         type:String,
         unique: true,
-        required: [true, 'A reference is required'],
+        required: false,
         maxlength:19,
         trim: true,
     },
     price:{
         type:Number,
-        required: [true, "Price field cannot be empty"],
+        required: false,
         min:0,
-        default:0,
     },
     description:{
         type: String,
@@ -33,20 +32,64 @@ const productSchema = new mongoose.Schema({
         required:[false,'Product must belong to a category'],
     },
     contentType: {
-        type: String, // store the content type (e.g., 'image/jpeg') here
+        type: String, 
       },
     Availability:{
         type:Boolean,
-        required:true,
+        required: false,
     },
     quantity:{
         type: Number,
-        required: true,
-        default:0
+        required: false,
     },
     favorite:{
         type : Boolean ,
         default : false 
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+      },
+    firstName:{
+        type:String,
+        required: false,
+
+        trim: true,
+    },
+    lastName:{
+        type:String,
+        required:false,
+        default:"",
+        trim: true,
+    },
+    email:{
+        type: String,
+        unique : true ,
+        lowercase : true ,
+        trim : true ,
+        required: false,
+    },
+    password:{
+        type:String,
+        required:false,
+        minlength :[8,'Your password must be at least 8 characters'],
+    },
+    role:{
+        type:String,
+        default:'user',
+        enum:['admin','user']
+    },
+    address:{
+        type:String,
+        required: false,
+    },
+    PhoneNumber:{
+        type:Number,
+        required:false
+    },
+    city:{
+        type:String,
+        required: false
     }
 },
 {
