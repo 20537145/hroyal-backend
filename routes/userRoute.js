@@ -79,26 +79,21 @@ router.get('/all',isAuth,async(req,res)=>{
 })
 router.patch('/profile/:userId', async (req, res) => {
   const userId = req.params.userId;
-
   if (!userId || userId.trim() === '') {
     return res.status(400).json({ message: 'Invalid userId' });
   }
-
   try {
     const user = await productSchema.findById(userId);
-
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
     Object.assign(user, req.body);
-
-   
-
+    if (req.body.password) {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      user.password = hashedPassword;
+    }
     const updatedUser = await user.save();
-
-    
-
+    const token = jwt.sign({ userId: updatedUser.id }, '1234564', { expiresIn: '7 days' });
     res.json({ user: updatedUser, token });
   } catch (error) {
     console.error(error);
