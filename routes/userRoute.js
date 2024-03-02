@@ -100,7 +100,7 @@ router.patch('/profile/:userId', async (req, res) => {
 
     const updatedUser = await user.save();
 
-    const token = jwt.sign({ userId: updatedUser.id }, 'your-secret-key', { expiresIn: '7 days' });
+    const token = jwt.sign({ userId: updatedUser.id }, '1234564', { expiresIn: '7 days' });
 
     res.json({ user: updatedUser, token });
   } catch (error) {
