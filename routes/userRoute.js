@@ -77,7 +77,7 @@ router.get('/all',isAuth,async(req,res)=>{
     res.status(500).send({message:e.message})
   }
 })
-router.patch('/:userId', async (req, res) => {
+router.put('/:userId', async (req, res) => {
   const userId = req.params.userId;
 
   if (!userId || userId.trim() === '') {
