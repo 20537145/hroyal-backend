@@ -83,7 +83,7 @@ const productSchema = new mongoose.Schema({
         type:String,
         required: false,
     },
-    PhoneNumber:{
+    phoneNumber:{
         type:Number,
         required:false
     },

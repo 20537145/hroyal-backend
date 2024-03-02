@@ -78,39 +78,48 @@ router.get('/all',isAuth,async(req,res)=>{
   }
 })
 router.patch('/profile/:userId', async (req, res) => {
-  const userId = req.params.userId;
-  if (!userId || userId.trim() === '') {
-    return res.status(400).json({ message: 'Invalid userId' });
-  }
   try {
+    const userId = req.params.userId;
+    
+    if (!userId || userId.trim() === '') {
+      return res.status(400).json({ message: 'Invalid userId' });
+    }
+
     const user = await productSchema.findById(userId);
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Update user fields except password
-    Object.assign(user, {
-      address: req.body.address,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      phoneNumber: req.body.phoneNumber,
-      email: req.body.email // Adding email field
-    });
-    
-    // Check if password is provided and hash it
-    if (req.body.password) {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      user.password = hashedPassword;
+    if (req.body.address) {
+      user.address = req.body.address;
     }
 
+    if (req.body.firstName) {
+      user.firstName = req.body.firstName;
+    }
+
+    if (req.body.lastName) {
+      user.lastName = req.body.lastName;
+    }
+
+    if (req.body.phoneNumber) {
+      user.phoneNumber = req.body.phoneNumber;
+    }
+
+    if (req.body.email) {
+      user.email = req.body.email;
+    }
+    
     const updatedUser = await user.save();
-    const token = jwt.sign({ userId: updatedUser.id }, '1234564', { expiresIn: '7 days' });
-    res.json({ user: updatedUser, token });
+    res.json({ user: updatedUser });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+
 
 
 
