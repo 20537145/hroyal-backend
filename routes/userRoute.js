@@ -87,11 +87,22 @@ router.patch('/profile/:userId', async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    Object.assign(user, req.body);
+
+    // Update user fields except password
+    Object.assign(user, {
+      address: req.body.address,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      phoneNumber: req.body.phoneNumber,
+      email: req.body.email // Adding email field
+    });
+    
+    // Check if password is provided and hash it
     if (req.body.password) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
       user.password = hashedPassword;
     }
+
     const updatedUser = await user.save();
     const token = jwt.sign({ userId: updatedUser.id }, '1234564', { expiresIn: '7 days' });
     res.json({ user: updatedUser, token });
@@ -100,6 +111,7 @@ router.patch('/profile/:userId', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
 
 
 
